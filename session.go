@@ -631,6 +631,7 @@ func (i *DialInfo) Copy() *DialInfo {
 		MaxIdleTimeMS:  i.MaxIdleTimeMS,
 		DialServer:     i.DialServer,
 		Dial:           i.Dial,
+		Safe:           i.Safe,
 	}
 
 	info.Addrs = make([]string, len(i.Addrs))
