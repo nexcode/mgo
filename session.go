@@ -3770,7 +3770,7 @@ func prepareFindOp(socket *mongoSocket, op *queryOp, limit int32) bool {
 		AwaitData:       op.flags&flagAwaitData != 0,
 		OplogReplay:     op.flags&flagLogReplay != 0,
 		NoCursorTimeout: op.flags&flagNoCursorTimeout != 0,
-		ReadConcern:     readLevel{level: op.readConcern},
+		ReadConcern:     readLevel{Level: op.readConcern},
 	}
 
 	if op.limit < 0 {
@@ -3790,6 +3790,7 @@ func prepareFindOp(socket *mongoSocket, op *queryOp, limit int32) bool {
 	op.hasOptions = false
 
 	if explain {
+		find.ReadConcern.Level = ""
 		op.query = bson.D{{Name: "explain", Value: op.query}}
 		return false
 	}
@@ -3839,7 +3840,7 @@ type findCmd struct {
 // readLevel provides the nested "level: majority" serialisation needed for the
 // query read concern.
 type readLevel struct {
-	level string `bson:"level,omitempty"`
+	Level string `bson:"level,omitempty"`
 }
 
 // getMoreCmd holds the command used for requesting more query results on MongoDB 3.2+.
